@@ -1,0 +1,40 @@
+# Nome da sua pipeline
+name: Python CI
+
+# Define quando a pipeline deve rodar
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# Define os "trabalhos" (jobs) que a pipeline vai executar
+jobs:
+  build:
+    
+    # Define a máquina virtual
+    runs-on: ubuntu-latest
+
+    # Define os passos (steps) do trabalho
+    steps:
+      # 1. Passo: Baixar o seu código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Passo: Configurar o Python 3.8
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      # 3. Passo: Instalar as dependências
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      
+      # 4. Passo: Rodar o "corretor" (linter)
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --show-source --statistics
