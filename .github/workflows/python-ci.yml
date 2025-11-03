@@ -89,4 +89,4 @@ jobs:
       - name: OWASP ZAP Baseline Scan
         uses: OWASP/zap-scan@v0.1.0
         with:
-        target: 'http://localhost:8080'
+        target: 'http://localhost:5000'
